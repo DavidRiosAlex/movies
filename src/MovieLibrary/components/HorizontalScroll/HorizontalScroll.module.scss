@@ -1,29 +1,28 @@
 .scrollContainer {
-    display: flex;
-    position: relative;
-    overflow: auto;
     height: 100%;
-    width: auto;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 100%;
     & > .horizontalScroll {
+        height: 300px;
+        width: 100%;
         display: flex;
-        flex: 1;
-        flex-direction: row;
-        justify-content: space-evenly;
-        height: 100%;
-        width: auto;
-    }
-    &::-webkit-scrollbar {
-        width: 7px;
-        height: 7px;
-    }
-    &::-webkit-scrollbar-track {
-        background: white;
-    }
-    &::-webkit-scrollbar-thumb {
-        background: #ddd;
-        visibility:hidden;
-    }
-    &:hover::-webkit-scrollbar-thumb {
-        visibility:visible;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: thin;
+        &::-webkit-scrollbar {
+            width: 1px;
+            height: 3px;
+            background: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #FF0000;
+        }
+        &::-webkit-scrollbar-button {
+            display: none;
+        }
+        &::-webkit-scrollbar-track-piece {
+            background: #888
+        }
     }
 }

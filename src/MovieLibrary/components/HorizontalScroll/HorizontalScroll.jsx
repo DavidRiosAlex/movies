@@ -1,8 +1,25 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
 import styles from './HorizontalScroll.module.scss';
 
-const HorizontalScroll = ({data, component: CustomComponent}) => {
+const useInfiniteHorizontalScrollRef = (callback, errorWidth) => {
     const scrollRef = useRef(null);
+    useEffect(() => {
+        const scroll = scrollRef.current;
+        if (scroll && typeof callback === 'function') {
+            const onScroll = () => {
+                if (scroll.scrollLeft + scroll.clientWidth >= scroll.scrollWidth - errorWidth) {
+                    callback();
+                }
+            }
+            scroll.addEventListener('scroll', onScroll);
+            return () => scroll.removeEventListener('scroll', onScroll);
+        }
+    }, [scrollRef.current]);
+    return scrollRef;
+};
+
+const HorizontalScroll = ({data, component: CustomComponent}) => {
+    const scrollRef = useInfiniteHorizontalScrollRef(() => {console.log('hola mama')}, 10);
     const moviesList = useMemo(() => {
         if (data) {
             return data.map((movie, index) => <CustomComponent key={index.toString()} {...movie} />)
@@ -10,30 +27,13 @@ const HorizontalScroll = ({data, component: CustomComponent}) => {
         return []
     }, [data]);
 
-    useEffect(() => {
-        const scroll = scrollRef.current;
-        if (scroll) {
-            const onWheel = (event) => {
-                if (event.deltaY == 0) return;
-                event.preventDefault();
-                const scrollToLeft = 200;
-                const scrollToRigth = -200;
-                const isScrollToDown = event.deltaY > 0;
-                scroll.scrollTo({
-                    left: scroll.scrollLeft + (isScrollToDown ? scrollToLeft : scrollToRigth),
-                    behavior: 'smooth',
-                });
-            };
-            scroll.addEventListener('wheel', onWheel);
-            return () => scroll.removeEventListener('wheel', onWheel)
-        }
-    }, [scrollRef]);
-
-    return <div ref={scrollRef} className={styles.scrollContainer}>
-        <div className={styles.horizontalScroll}>
-            {moviesList}
+    return (
+        <div className={styles.scrollContainer}>
+            <div ref={scrollRef} className={styles.horizontalScroll}>
+                {moviesList}
+            </div>
         </div>
-    </div>
+    )
 };
 
 export default memo(HorizontalScroll)
