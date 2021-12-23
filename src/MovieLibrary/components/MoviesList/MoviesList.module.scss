@@ -1,4 +1,21 @@
 .moviesList {
   display: flex;
-  width: 100%;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  overflow-x: auto;
+  height: 100%;
+  align-items: flex-start;
+  justify-content: center;
+  &::-webkit-scrollbar {
+    display: block;
+    width: 8px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(136, 20, 20, 1);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(136, 20, 20, 0.8);
+  }
 }

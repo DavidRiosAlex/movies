@@ -1,13 +1,13 @@
 .cardContainer{
+  display: flex;
+  width: 200px;
+  height: 300px;
+  margin-top: 4vh;
+  margin: 4vh 2vw 0 2vw;
+  overflow: hidden;
+  & > .moviePoster{
     width: 200px;
     height: 300px;
-    margin-left: 10px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-.moviePoster{
-    width: auto;
-    height: 300px;
-    margin: 5px;
+    overflow: hidden;
+  }
 }
