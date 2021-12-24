@@ -1,26 +1,40 @@
 import {LOAD_MOVIES_FAILURE, LOAD_MOVIES_REQUEST, LOAD_MOVIES_SUCCESS} from '../../actionTypes';
 
-export const fetchTopRatedMovies = ({page=0}) => async (dispatch, getState, {api, apiKey, language}) => {
+export const fetchTopRatedMovies = ({pages, page}={}) => async (dispatch, getState, {api, apiKey, language}) => {
+  let response;
+  const movies = [];
   try {
     dispatch({type: LOAD_MOVIES_REQUEST});
-    let _page = page;
-    let movies = [];
-    let totalMovies = 0;
-    let totalPages = 0;
 
-    const requestCalls = Array.from({length: page ? 1 : 3}, () => {
-      _page ++
-      return api({method: 'get', params: {api_key: apiKey, language, page: _page}});
-    });
-    const responseList = await Promise.all(requestCalls);
-    responseList.forEach(({data}) => {
-      movies.push(...data.results);
-      totalMovies = data.total_results;
-      totalPages = data.total_pages;
-    });
-    dispatch({type: LOAD_MOVIES_SUCCESS, payload: {movies, totalMovies, totalPages, page: _page, }})
+    if (Array.isArray(pages)) {
+      for (const page of pages) {
+        response = await api({method: 'get', params: {api_key: apiKey, language, page}});
+        movies.push(...response.data.results);
+      }
+      dispatch({
+        type: LOAD_MOVIES_SUCCESS,
+        payload:{
+          movies: movies,
+          totalMovies: response.data.total_results,
+          totalPages: response.data.total_pages,
+          page: response.data.page,
+        }
+      });
+      return null;
+    }
+    response = await api({method: 'get', params: {api_key: apiKey, language, page: page}});
+
+    dispatch({
+      type: LOAD_MOVIES_SUCCESS,
+      payload: {
+        movies: response.data.results,
+        totalMovies: response.data.total_results,
+        totalPages: response.data.total_pages,
+        page: page,
+      }
+    });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
   } catch (error) {
-    console.error(error)
+    console.error(error);
     dispatch({type: LOAD_MOVIES_FAILURE, payload: error.message});
   }
-}
+};

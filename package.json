@@ -34,6 +34,8 @@
         ]
     },
     "devDependencies": {
-        "@redux-devtools/core": "^3.9.1"
+        "@redux-devtools/core": "^3.9.1",
+        "eslint": "^8.5.0",
+        "eslint-plugin-react": "^7.28.0"
     }
 }
