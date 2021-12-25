@@ -1,37 +1,30 @@
-import { memo, useState } from "react";
-import ReactDOM from 'react-dom';
+import { memo, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from '../Modal/Modal';
 import styles from './MovieCard.module.scss';
-import Text from '../Text/Text';
+import { MovieDetail } from '../MovieDetail/MovieDetail';
 
-const TMDB_IMAGE_BASE_PATH = 'https://image.tmdb.org/t/p/w500/'
-const style = {
-  portalContainer: {
-    position: 'absolute',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    display: 'flex',
-    width: '100vw',
-    height: '100vh'
-  }
-}
-const MovieCard = ({original_title, backdrop_path, poster_path}) => {
+export const TMDB_IMAGE_BASE_PATH = 'https://image.tmdb.org/t/p/w500/';
+
+const MovieCard = ({poster_path, ...details}) => {
   const [showModal, setShowModal] = useState(false);
   const handleMovieClick = () => {
     setShowModal(!showModal);
   };
+  const handleErrorOnFetchImage = (event) => {
+    event.target.onerror = null;
+    event.target.src='./assets/defaults/claqueta.svg';
+  };
   return (
     <div className={styles.cardContainer}>
-      {showModal && ReactDOM.createPortal(<div onClick={handleMovieClick} style={style.portalContainer}>holaaa</div>, document.querySelector('#portal'))}
-      <img src={TMDB_IMAGE_BASE_PATH + poster_path} className={styles.moviePoster} onClick={handleMovieClick}/>
+      {<Modal showModal={showModal} onOutModalClick={() => setShowModal(false)} {...details} poster_path={poster_path} component={MovieDetail} />}
+      <img src={TMDB_IMAGE_BASE_PATH + poster_path} className={styles.moviePoster} onClick={handleMovieClick} onError={handleErrorOnFetchImage}/>
     </div>
-  )
+  );
 };
 
-const isEqualComponent = (prevProps, nextProps) => {
-    return prevProps.original_title === nextProps.original_title
+MovieCard.propTypes = {
+  poster_path: PropTypes.string,
 };
 
-export default memo(MovieCard, isEqualComponent);
+export default memo(MovieCard);

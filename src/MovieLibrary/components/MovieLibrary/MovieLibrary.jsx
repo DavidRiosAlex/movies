@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,6 +19,15 @@ const BootstrapInput = styled(InputBase)(({/* theme */ }) => ({
     padding: '0 10px'
   }
 }));
+
+Array.prototype.distinct = (distinctBy) => {
+  const arrayDistinct = [...this].reduce((acc, element) => {
+    if (acc[element[distinctBy]]) {
+      acc[element[distinctBy]] = element;
+    }
+  }, {});
+  return Object.values(arrayDistinct);
+};
 
 export default function MovieLibrary() {
   // const [selectedMovie, setSelectedMovie] = useState(null);
@@ -45,6 +54,14 @@ export default function MovieLibrary() {
       return a.vote_average - b.vote_average;
     }
   };
+
+  const renderMovies = useMemo(() => {
+    const moviesDistinct = Object.values(movies.reduce((acc, element) => {
+      acc[element.id] = element;
+      return acc;
+    }, {}));
+    return moviesDistinct.sort(sortByOptionCallback);
+  }, [movies, sortingType]);
   return(
     <div className={styles.pageContainer}>
       <div className={styles.headerFilters}>
@@ -61,7 +78,7 @@ export default function MovieLibrary() {
         </Select>
       </div>
       <div className={styles.movies}>
-        <MoviesList movies={movies.sort(sortByOptionCallback)} />
+        <MoviesList movies={renderMovies} />
       </div>
     </div>);
 }

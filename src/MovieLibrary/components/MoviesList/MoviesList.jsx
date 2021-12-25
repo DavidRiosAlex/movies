@@ -1,21 +1,17 @@
 import {useDispatch, useSelector} from 'react-redux';
+import PropTypes from 'prop-types';
 import styles from './MoviesList.module.scss';
 import MovieCard from '../MovieCard/MovieCard';
 import {useInfiniteVerticalScrollRef} from '../../customHooks/hooks';
-// import {getMovies} from '../../store/selectors';
 import {fetchTopRatedMovies} from '../../store/actions';
 
-export default function MoviesList (){
+export const MoviesList = ({movies}) => {
   const dispatch = useDispatch();
-  const {page, totalMovies, totalPages, movies} = useSelector( state => state.cinema);
+  const {page, totalMovies, totalPages} = useSelector( state => state.cinema);
 
-  const infinityHorizontalScrollCallback = () => {
-    console.log('requesting..')
-    dispatch(fetchTopRatedMovies({page: page + 1}));
-  };
   const scrollRef = useInfiniteVerticalScrollRef({
     page,
-    callback: infinityHorizontalScrollCallback,
+    callback: () => dispatch(fetchTopRatedMovies({page: page + 1})),
     errorHeight: 10,
     condition: page + 1 <= totalPages && totalMovies >= movies.length
   });
@@ -23,4 +19,10 @@ export default function MoviesList (){
     <div className={styles.moviesList} ref={scrollRef}>
       {movies.map((movie) => <MovieCard key={movie.original_title} {...movie} />)}
     </div>); 
-}
+};
+
+MoviesList.propTypes = {
+  movies: PropTypes.array,
+};
+
+export default MoviesList;

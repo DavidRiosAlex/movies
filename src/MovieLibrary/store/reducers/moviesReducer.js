@@ -9,6 +9,16 @@ const initialState = {
   error: null,
 };
 
+const distinctMovies = (movies) => {
+  return Object.values(
+    movies.reduce((acc, element) => {
+      if (!acc[element.id]) {
+        acc[element.id] = element;
+      }
+      return acc;
+    }, {}));
+};
+
 export default function (state = initialState, action) {
   const {type, payload} = action;
   switch (type) {
@@ -18,7 +28,7 @@ export default function (state = initialState, action) {
   case LOAD_MOVIES_SUCCESS: {
     return {
       ...state,
-      movies: [...state.movies, ...payload.movies],
+      movies: distinctMovies([...state.movies, ...payload.movies]),
       page: payload.page,
       totalPages: payload.totalPages,
       totalMovies: payload.totalMovies,

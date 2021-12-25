@@ -2,6 +2,7 @@
 module.exports = {
   'env': {
     'browser': true,
+    'node': true,
     'es2021': true
   },
   'extends': [
@@ -36,6 +37,8 @@ module.exports = {
       'always'
     ],
     'react/jsx-uses-react': 'off',
-    'react/react-in-jsx-scope': 'off'
+    'react/react-in-jsx-scope': 'off',
+    'no-process-env': 'off',
+    'no-console': 1,
   }
 };
