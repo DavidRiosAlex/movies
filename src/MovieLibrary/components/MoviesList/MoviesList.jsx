@@ -4,20 +4,25 @@ import styles from './MoviesList.module.scss';
 import MovieCard from '../MovieCard/MovieCard';
 import {useInfiniteVerticalScrollRef} from '../../customHooks/hooks';
 import {fetchTopRatedMovies} from '../../store/actions';
+import { useCallback } from 'react';
 
 export const MoviesList = ({movies}) => {
   const dispatch = useDispatch();
   const {page, totalMovies, totalPages} = useSelector( state => state.cinema);
 
+  const fetchMore = useCallback(() => {
+    dispatch(fetchTopRatedMovies({page: page + 1}));
+  }, [page]);
+
   const scrollRef = useInfiniteVerticalScrollRef({
     page,
-    callback: () => dispatch(fetchTopRatedMovies({page: page + 1})),
+    callback: fetchMore,
     errorHeight: 10,
     condition: page + 1 <= totalPages && totalMovies >= movies.length
   });
   return(
     <div className={styles.moviesList} ref={scrollRef}>
-      {movies.map((movie) => <MovieCard key={movie.original_title} {...movie} />)}
+      {movies.map((movie) => <MovieCard key={movie.id.toString()} {...movie} />)}
     </div>); 
 };
 

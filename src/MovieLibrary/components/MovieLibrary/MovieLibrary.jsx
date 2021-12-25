@@ -20,15 +20,6 @@ const BootstrapInput = styled(InputBase)(({/* theme */ }) => ({
   }
 }));
 
-Array.prototype.distinct = (distinctBy) => {
-  const arrayDistinct = [...this].reduce((acc, element) => {
-    if (acc[element[distinctBy]]) {
-      acc[element[distinctBy]] = element;
-    }
-  }, {});
-  return Object.values(arrayDistinct);
-};
-
 export default function MovieLibrary() {
   // const [selectedMovie, setSelectedMovie] = useState(null);
   const [sortingType, setSortingType] = useState(1);
@@ -56,11 +47,7 @@ export default function MovieLibrary() {
   };
 
   const renderMovies = useMemo(() => {
-    const moviesDistinct = Object.values(movies.reduce((acc, element) => {
-      acc[element.id] = element;
-      return acc;
-    }, {}));
-    return moviesDistinct.sort(sortByOptionCallback);
+    return movies.sort(sortByOptionCallback);
   }, [movies, sortingType]);
   return(
     <div className={styles.pageContainer}>

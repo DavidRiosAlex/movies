@@ -7,6 +7,10 @@ import styles from './MovieDetail.module.scss';
 import { TMDB_IMAGE_BASE_PATH } from '../MovieCard/MovieCard';
 
 export const MovieDetail = ({poster_path, ...details}) => {
+  const handleErrorOnFetchImage = (event) => {
+    event.target.onerror = null;
+    event.target.src='./assets/defaults/claqueta.svg';
+  };
   return (<div className={styles} onClick={(e) => e.stopPropagation()}>
     <Card sx={{ flex: 0.5, height: '70%', width: 700}}>
       <CardMedia
@@ -14,6 +18,7 @@ export const MovieDetail = ({poster_path, ...details}) => {
         alt="green iguana"
         height="300"
         image={TMDB_IMAGE_BASE_PATH + poster_path}
+        onError={handleErrorOnFetchImage}
       />
       <CardContent sx={{backgroundColor: 'hsl(0, 0%, 8%)'}}>
         <Typography  color="common.white" gutterBottom variant="h5" component="div">
