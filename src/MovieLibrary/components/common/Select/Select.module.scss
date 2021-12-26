@@ -4,12 +4,11 @@
   width: 400px;
   user-select: none;
   margin: 100px auto;
-  background-color: white;
   position: relative;
   display: flex;
   flex-direction: row;
-  border: 1px solid #fff;
   & > .select_btn {
+    border: 1px solid #fff;
     padding: 15px 20px;
     background: $primary_background;
     box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
@@ -20,6 +19,7 @@
     justify-content: space-between;
     cursor: pointer;
     flex: 1;
+    border-radius: 5px;
   }
   & > .select_content {
     position: absolute;

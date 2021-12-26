@@ -1,5 +1,4 @@
-import {useEffect} from 'react';
-import {useSpring, animated} from 'react-spring';
+import {useTransition, animated} from 'react-spring';
 import PropTypes from 'prop-types';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,28 +7,18 @@ import styles from './MovieDetail.module.scss';
 import { TMDB_IMAGE_BASE_PATH } from '../MovieCard/MovieCard';
 
 export const MovieDetail = ({poster_path, ...details}) => {
-  const [_styles, api] = useSpring(() => ({visibility: 'hidden'}));
+  const transition = useTransition(true, {
+    from: {opacity: 0, x: -5, border: '1px solid black'},
+    enter: {opacity: 1, x: 0, color: '1px solid black'},
+    to: {opacity: 1},
+  });
   const handleErrorOnFetchImage = (event) => {
     event.target.onerror = null;
     event.target.src='./assets/defaults/claqueta.svg';
   };
-  useEffect(() => {
-    api.start({
-      from: async (next) => {
-        console.log('asdasd');
-        await next({visibility: 'hidden'});
-        await next({visibility: 'visible', opacity: 0});
-        await next({visibility: 'visible', opacity: 1});
 
-      },
-      to: async (next) => {
-        await next({visibility: 'visible', opacity: 1});
-
-      },
-    });
-  }, []);
-  return (
-    <animated.div style={_styles} className={styles} onClick={(e) => e.stopPropagation()}>
+  return transition((style) => (
+    <animated.div style={style} className={styles} onClick={(e) => e.stopPropagation()}>
       <Card sx={{ flex: 0.5, height: '70%', width: 700}}>
         <CardMedia
           component="img"
@@ -59,7 +48,7 @@ export const MovieDetail = ({poster_path, ...details}) => {
         </CardContent>
       </Card>
     </animated.div>
-  );
+  ));
 };
 
 MovieDetail.propTypes = {
