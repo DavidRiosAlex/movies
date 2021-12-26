@@ -1,0 +1,24 @@
+@import '../../../stylesConfig.scss';
+@import '../../../commonStyles.scss';
+
+.overview{
+  display: flex;
+  flex: 1;
+  color: rgba(255, 255, 255, 0.795);
+  flex-direction: row;
+  .description{
+    font-family: $font_family;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    height: 200px;
+    flex: 1
+  }
+  .category{
+    font-family: $font_family;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+  }
+}

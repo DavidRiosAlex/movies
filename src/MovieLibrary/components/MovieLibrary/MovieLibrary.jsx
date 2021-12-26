@@ -1,24 +1,25 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputBase from '@mui/material/InputBase';
-import { styled } from '@mui/material/styles';
+// import Select from '@mui/material/Select';
+// import MenuItem from '@mui/material/MenuItem';
+// import InputBase from '@mui/material/InputBase';
+// import { styled } from '@mui/material/styles';
 import {fetchTopRatedMovies} from '../../store/actions';
 import styles from './MovieLibrary.module.scss';
 import {getMovies} from '../../store/selectors';
 import MoviesList from '../MoviesList/MoviesList';
 import {CLEAN_CINEMA} from '../../../actionTypes';
+import { Select } from '../common/Select';
 
 // eslint-disable-next-line no-empty-pattern
-const BootstrapInput = styled(InputBase)(({/* theme */ }) => ({
-  '& .MuiInputBase-input': {
-    backgroundColor: 'black',
-    border: '1px solid white',
-    color: 'white',
-    padding: '0 10px'
-  }
-}));
+// const BootstrapInput = styled(InputBase)(({/* theme */ }) => ({
+//   '& .MuiInputBase-input': {
+//     backgroundColor: 'black',
+//     border: '1px solid white',
+//     color: 'white',
+//     padding: '0 10px'
+//   },
+// }));
 
 export default function MovieLibrary() {
   // const [selectedMovie, setSelectedMovie] = useState(null);
@@ -42,7 +43,7 @@ export default function MovieLibrary() {
     } else if (sortingType === 2) {
       return a.original_title > b.original_title ? -1 : (a.original_title < b.original_title ? 1 : 0);
     } else if (sortingType === 3) {
-      return a.vote_average - b.vote_average;
+      return b.vote_average - a.vote_average;
     }
   };
 
@@ -52,19 +53,9 @@ export default function MovieLibrary() {
   return(
     <div className={styles.pageContainer}>
       <div className={styles.headerFilters}>
-        <Select
-          labelId="sort by"
-          id="sort_by"
-          value={sortingType}
-          label="sorted by"
-          input={<BootstrapInput />}
-          onChange={setSortingType}>
-          <MenuItem value={1}>A-Z</MenuItem>
-          <MenuItem value={2}>Z-A</MenuItem>
-          <MenuItem value={3}>Rating</MenuItem>
-        </Select>
+        <Select value={sortingType} options={[{value: 1, label: 'A-Z'}, {value: 2, label: 'Z-A'}, {value: 3, label: 'RATING'}]} onSelect={value => setSortingType(value)} />
       </div>
-      <div className={styles.movies}>
+      <div className={styles.movies} unselectable='on'>
         <MoviesList movies={renderMovies} />
       </div>
     </div>);

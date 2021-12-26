@@ -1,0 +1,51 @@
+@for $size from 0 through 100 {
+  .font_size_#{$size} {
+    font-size: #{$size}px;
+  }
+  .flex#{$size}{
+    display: flex;
+    flex: $size * 0.01;
+  }
+  .margin_left_#{$size} {
+    margin-left: #{$size}px;
+  }
+  .margin_right_#{$size} {
+    margin-right: #{$size}px;
+  }
+  .margin_top_#{$size} {
+    margin-top: #{$size}px;
+  }
+  .margin_bottom_#{$size} {
+    margin-bottom: #{$size}px;
+  }
+}
+
+.space_between{
+  display: flex;
+  justify-content: space-between;
+}
+
+.space_evenly{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.justify_start {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.align_start{
+  display: flex;
+  align-items: flex-start;
+}
+
+.align_end{
+  display: flex;
+  align-items: flex-end;
+}
+
+.align_center{
+  display: flex;
+  align-items: center;
+}

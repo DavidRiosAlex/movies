@@ -1,0 +1,19 @@
+[data-theme="dark"] {
+  --main-color: hsl(0, 0%, 8%);
+  --font-color: #ffff;
+  --field_input_color: #333;
+}
+
+$primary_background: var(--main-color);
+$font_color: var(--font-color);
+$field_input_color: var(--field_input_color);
+$common_color_white: #fff;
+$font_family:  'Raleway', sans-serif;
+
+:export {
+  primary_background: $primary_background;
+  font_color: $font_color;
+  field_input_color: $field_input_color;
+  common_color_white: $common_color_white;
+  font_family: $font_family;
+}

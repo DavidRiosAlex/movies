@@ -8,17 +8,19 @@ import { useCallback } from 'react';
 
 export const MoviesList = ({movies}) => {
   const dispatch = useDispatch();
-  const {page, totalMovies, totalPages} = useSelector( state => state.cinema);
+  const {page, totalMovies, totalPages, fetching} = useSelector( state => state.cinema);
 
   const fetchMore = useCallback(() => {
-    dispatch(fetchTopRatedMovies({page: page + 1}));
+    if (!fetching) {
+      dispatch(fetchTopRatedMovies({page: page + 1}));
+    }
   }, [page]);
 
   const scrollRef = useInfiniteVerticalScrollRef({
     page,
     callback: fetchMore,
     errorHeight: 10,
-    condition: page + 1 <= totalPages && totalMovies >= movies.length
+    condition: page + 1 <= totalPages && totalMovies >= movies.length && !fetching
   });
   return(
     <div className={styles.moviesList} ref={scrollRef}>

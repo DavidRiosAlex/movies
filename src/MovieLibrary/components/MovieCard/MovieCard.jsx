@@ -16,9 +16,9 @@ const MovieCard = ({poster_path, ...details}) => {
     event.target.src='./assets/defaults/claqueta.svg';
   };
   return (
-    <div className={styles.cardContainer}>
+    <div className={styles.cardContainer} unselectable='on'>
       {<Modal showModal={showModal} onOutModalClick={() => setShowModal(false)} {...details} poster_path={poster_path} component={MovieDetail} />}
-      <img src={TMDB_IMAGE_BASE_PATH + poster_path} className={styles.moviePoster} onClick={handleMovieClick} onError={handleErrorOnFetchImage}/>
+      <img draggable={false} unselectable='on' src={TMDB_IMAGE_BASE_PATH + poster_path} className={styles.moviePoster} onClick={handleMovieClick} onError={handleErrorOnFetchImage}/>
     </div>
   );
 };
